@@ -2,23 +2,17 @@ package com.elenikivi.videocaptureapiproject.shared.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.SurfaceTexture
 import android.hardware.camera2.CameraCharacteristics
-import android.hardware.camera2.CaptureRequest
-import android.media.MediaRecorder
 import android.net.Uri
-import android.util.Range
 import android.util.Size
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.OptIn
 import androidx.camera.camera2.interop.Camera2CameraInfo
-import androidx.camera.camera2.interop.Camera2Interop
 import androidx.camera.camera2.interop.ExperimentalCamera2Interop
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.CameraInfo
 import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.core.TorchState
 import androidx.camera.core.resolutionselector.AspectRatioStrategy
@@ -155,7 +149,7 @@ class VideoCaptureManager private constructor(private val builder: Builder) :
                         )
                         .setAspectRatioStrategy(
                             if (currentAspectRatio == AspectRatio.RATIO_16_9) {
-                            AspectRatioStrategy.RATIO_16_9_FALLBACK_AUTO_STRATEGY
+                                AspectRatioStrategy.RATIO_16_9_FALLBACK_AUTO_STRATEGY
                             } else {
                                 AspectRatioStrategy.RATIO_4_3_FALLBACK_AUTO_STRATEGY
                             }
@@ -174,7 +168,8 @@ class VideoCaptureManager private constructor(private val builder: Builder) :
                     QualitySelector.from(
                         Quality.UHD,
                         FallbackStrategy.higherQualityOrLowerThan(Quality.SD)
-                    ))
+                    )
+                )
                 .build()
             videoCapture = VideoCapture.Builder(recorder)
                 .apply {
@@ -184,25 +179,11 @@ class VideoCaptureManager private constructor(private val builder: Builder) :
                 }
                 .build()
 
-
-            /*val builder = ImageAnalysis.Builder()
-            val ext: Camera2Interop.Extender<*> = Camera2Interop.Extender(builder)
-            ext.setCaptureRequestOption(
-                CaptureRequest.CONTROL_AE_MODE,
-                CaptureRequest.CONTROL_AE_MODE_OFF
-            )
-            ext.setCaptureRequestOption(
-                CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE,
-                Range<Int>(60, 60)
-            )
-            val imageAnalysis = builder.build()*/
-
             cameraProvider.bindToLifecycle(
                 getLifeCycleOwner(),
                 cameraSelector,
                 preview,
                 videoCapture,
-                //imageAnalysis
             ).apply {
                 cameraControl.enableTorch(previewState.torchState == TorchState.ON)
             }

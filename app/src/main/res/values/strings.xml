@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CameraXAndCompose</string>
+    <string name="app_name">Video Capture X</string>
     <string name="allow_permission">Allow permission</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
